@@ -20,13 +20,22 @@ class HttpRequest {
     });
   }
 
-  post({ url, body }, options) {
-    return this.#gotInstance(url, {
+  post(payload, options) {
+    const config = {
       method: methods.POST,
       responseType: "json",
-      json: body,
       ...options,
-    });
+    };
+
+    if (payload?.body) {
+      config["body"] = payload.body;
+    }
+
+    if (payload?.json) {
+      config["json"] = payload.json;
+    }
+
+    return this.#gotInstance(payload.url, config);
   }
 
   put({ url, body }, options) {
